@@ -336,8 +336,8 @@ RSpec.describe ExpensiveMath do
 
     it "patches numeric classes with expensive operators" do
       # Verify that original methods are aliased
-      expect(Integer.instance_methods).to include(:original_+)
-      expect(Float.instance_methods).to include(:original_*)
+      expect(Integer.instance_methods).to include(:"original_+")
+      expect(Float.instance_methods).to include(:"original_*")
     end
 
     it "falls back to original method when LLM fails" do
@@ -345,7 +345,7 @@ RSpec.describe ExpensiveMath do
       
       # Should fall back to original CPU calculation without raising errors
       expect { 2 + 3 }.not_to raise_error
-      expect(2.original_+ 3).to eq(5) # Original method should still work
+      expect(2.send(:"original_+", 3)).to eq(5) # Original method should still work
     end
 
     it "falls back to original method when LLM is configured but fails" do

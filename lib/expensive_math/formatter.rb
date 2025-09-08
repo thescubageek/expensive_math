@@ -1,6 +1,8 @@
 # frozen_string_literal: true
 
 module ExpensiveMath
-  VERSION = "0.1.0"
+  class Formatter
+    class << self
+    end
+  end
 end
-  

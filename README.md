@@ -11,9 +11,11 @@ Are you...
 
 ### ExpensiveMath is here to solve these problems!
 
-Why use efficient CPU operations when you can leverage **cutting-edge AI technology** to **disrupt the status quo of basic arithmetic? This isn't just math - it's **AI-powered mathematical intelligence as a service**! We're **democratizing computation** by making every addition operation a **scalable, cloud-native, machine learning experience**. 
+Why use efficient CPU operations when you can leverage **cutting-edge AI technology** to **disrupt the status quo of basic arithmetic?** 
 
-Get with the times and **500,000x your mathematical operations inefficiency** with the power of **generative AI**! This is the future of math, bro - we're not just doing calculations, we're **building the next generation of intelligent computational workflows**.
+This isn't just math - it's **AI-powered mathematical intelligence as a service**! We're **democratizing computation** by making every addition operation a **scalable, cloud-native, machine learning experience**. 
+
+With the power of **generative AI**, you can extend your mathematic operations runtime by over a **staggering 100 MILLION PERCENT! This is the future of math, bro - we're not just doing calculations, we're **building the next generation of intelligent computational workflows**.
 
 Perfect for developers who think their math operations aren't nearly **expensive, slow, or carbon-intensive enough**. Finally, a way to make your calculator app require an internet connection and a monthly subscription to OpenAI!
 
@@ -163,6 +165,82 @@ puts ExpensiveMath.dry_run?  # => true
 - ✅ Returns correct mathematical results using normal Ruby operations
 - ✅ Perfect for testing integration without API costs
 
+### Estimation Rake Task
+
+ExpensiveMath includes a convenient rake task for estimating the cost and performance impact of mathematical expressions without actually making API calls:
+
+#### Single Expression Analysis
+
+```bash
+rake expensive_math:estimate['2 + 3 * 4']
+```
+
+This will output detailed analysis including:
+- Operation count detection
+- Estimated API cost
+- Estimated execution time
+- Performance comparison with regular Ruby
+
+#### Multiple Expression Analysis
+
+You can analyze multiple expressions at once using semicolon delimiters:
+
+#### Simple Expression
+```bash
+rake expensive_math:estimate['2 + 3']
+```
+
+**Output:**
+```
+Processing 1 expressions: ["2 + 3"]
+📊 Comparison Table:
+| Expression | Operations | Regular Ruby | ExpensiveMath | Time Increase | Cost |
+|------------|------------|--------------|---------------|---------------|------|
+| 2 + 3      | 1          | 0.0029ms     | 1820ms        | 62,658,517%   | $0.000002 |
+```
+
+#### Multiple Moderate Expressions
+```bash
+rake expensive_math:estimate['5 * 7 - 1; (10 / 2) + 3; 2 ** 3 % 5']
+```
+
+**Output:**
+```
+Processing 3 expressions: ["5 * 7 - 1", "(10 / 2) + 3", "2 ** 3 % 5"]
+📊 Comparison Table:
+| Expression | Operations | Regular Ruby | ExpensiveMath | Time Increase | Cost |
+|------------|------------|--------------|---------------|---------------|------|
+| 5 * 7 - 1  | 2          | 0.0035ms     | 3640ms        | 103,957,043%  | $0.000004 |
+| (10 / 2) + 3 | 2          | 0.0041ms     | 3728ms        | 90,926,729%   | $0.000004 |
+| 2 ** 3 % 5 | 3          | 0.0058ms     | 5547ms        | 95,637,831%   | $0.000006 |
+```
+
+#### Complex Expressions with Comparisons
+```bash
+rake expensive_math:estimate['(2 + 3) * 4 != 20; 10 / 2 + 3 * 4 >= 17; (5 ** 2 - 10) <= (3 + 4) * 2']
+```
+
+**Output:**
+```
+Processing 3 expressions: ["(2 + 3) * 4 != 20", "10 / 2 + 3 * 4 >= 17", "(5 ** 2 - 10) <= (3 + 4) * 2"]
+📊 Comparison Table:
+| Expression | Operations | Regular Ruby | ExpensiveMath | Time Increase | Cost |
+|------------|------------|--------------|---------------|---------------|------|
+| (2 + 3) * 4 !... | 3          | 0.0038ms     | 5547ms        | 145,973,584%  | $0.000006 |
+| 10 / 2 + 3 * ... | 4          | 0.0046ms     | 5472ms        | 118,956,422%  | $0.000008 |
+| (5 ** 2 - 10)... | 5          | 0.006ms      | 4140ms        | 68,999,900%   | $0.00001 |
+```
+
+**Key Observations:**
+- Each operation costs ~$0.000002
+- Regular Ruby operations execute in microseconds (0.003-0.006ms)
+- ExpensiveMath operations take thousands of milliseconds (3-6 seconds each)
+- Time increases range from 69 million% to 146 million% slower than regular Ruby
+- Inequality operators like `!=` leverage the expensive `==` implementation
+- Complex expressions with 5+ operations can cost over $0.00001 per calculation
+
+The rake task automatically runs in dry run mode, so no API key is required and no actual API calls are made.
+
 ## Features
 
 - ✅ Replaces all basic mathematical operators with LLM API calls
@@ -170,7 +248,7 @@ puts ExpensiveMath.dry_run?  # => true
 - ✅ Supports comparison operators
 - ✅ Works with integers, floats, rationals, and complex numbers
 - ✅ Configurable LLM endpoint and model
-- ✅ **Dry run mode** for testing without API calls or costs
+- ✅ Dry run mode for testing without API calls or costs
 - ✅ Guaranteed to be slower and more expensive than regular math
 - ✅ Perfect for burning through your API quota
 - ✅ Might cost you your job
@@ -195,16 +273,6 @@ ExpensiveMath automatically handles failures gracefully to ensure your applicati
 2. **Automatic Fallback**: When LLM calls fail after retries, operations automatically fall back to the original Ruby math operators that were preserved during monkey patching. This ensures your app doesn't crash - it just continues being brutally slow and expensive.
 
 3. **Transparent Recovery**: The fallback happens seamlessly within each operator call, so your code continues executing without manual error handling. You get the "best" of both worlds: maximum inefficiency when possible, basic functionality when necessary.
-
-## Performance
-
-Here's a performance comparison:
-
-| Operation | Regular Ruby | ExpensiveMath | Cost Increase |
-|-----------|--------------|---------------|---------------|
-| 2 + 2     | 0.001ms      | 500-2000ms    | 500,000x - 2,000,000x |
-| 10 * 5    | 0.001ms      | 500-2000ms    | 500,000x - 2,000,000x |
-| API Cost  | $0.00        | ~$0.000002    | ∞ |
 
 ## Contributing
 
