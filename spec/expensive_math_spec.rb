@@ -135,24 +135,159 @@ RSpec.describe ExpensiveMath do
     end
 
     describe "calculate method" do
-      let(:mock_response) do
-        {
-          "choices" => [
-            {
-              "message" => {
-                "content" => "5"
-              }
-            }
-          ]
-        }
-      end
-
       before do
-        allow(mock_openai_client).to receive(:chat).and_return(mock_response)
         allow(ExpensiveMath).to receive(:log) # Mock logging to avoid output during tests
       end
 
+      describe "arithmetic operations" do
+        it "handles addition" do
+          mock_response = { "choices" => [{ "message" => { "content" => "5" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:+, 2, 3)
+          expect(result).to eq(5)
+        end
+
+        it "handles subtraction" do
+          mock_response = { "choices" => [{ "message" => { "content" => "1" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:-, 3, 2)
+          expect(result).to eq(1)
+        end
+
+        it "handles multiplication" do
+          mock_response = { "choices" => [{ "message" => { "content" => "6" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:*, 2, 3)
+          expect(result).to eq(6)
+        end
+
+        it "handles division" do
+          mock_response = { "choices" => [{ "message" => { "content" => "2.5" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:/, 5, 2)
+          expect(result).to eq(2.5)
+        end
+
+        it "handles modulo" do
+          mock_response = { "choices" => [{ "message" => { "content" => "1" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:%, 5, 2)
+          expect(result).to eq(1)
+        end
+
+        it "handles exponentiation" do
+          mock_response = { "choices" => [{ "message" => { "content" => "8" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:**, 2, 3)
+          expect(result).to eq(8)
+        end
+      end
+
+      describe "comparison operations" do
+        it "handles equality (true)" do
+          mock_response = { "choices" => [{ "message" => { "content" => "true" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:==, 2, 2)
+          expect(result).to be true
+        end
+
+        it "handles equality (false)" do
+          mock_response = { "choices" => [{ "message" => { "content" => "false" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:==, 2, 3)
+          expect(result).to be false
+        end
+
+        it "handles less than" do
+          mock_response = { "choices" => [{ "message" => { "content" => "true" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:<, 2, 3)
+          expect(result).to be true
+        end
+
+        it "handles greater than" do
+          mock_response = { "choices" => [{ "message" => { "content" => "false" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:>, 2, 3)
+          expect(result).to be false
+        end
+
+        it "handles less than or equal" do
+          mock_response = { "choices" => [{ "message" => { "content" => "true" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:<=, 2, 3)
+          expect(result).to be true
+        end
+
+        it "handles greater than or equal" do
+          mock_response = { "choices" => [{ "message" => { "content" => "false" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:>=, 2, 3)
+          expect(result).to be false
+        end
+      end
+
+      describe "spaceship operator" do
+        it "handles spaceship operator (-1)" do
+          mock_response = { "choices" => [{ "message" => { "content" => "-1" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:<=>, 2, 3)
+          expect(result).to eq(-1)
+        end
+
+        it "handles spaceship operator (0)" do
+          mock_response = { "choices" => [{ "message" => { "content" => "0" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:<=>, 2, 2)
+          expect(result).to eq(0)
+        end
+
+        it "handles spaceship operator (1)" do
+          mock_response = { "choices" => [{ "message" => { "content" => "1" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:<=>, 3, 2)
+          expect(result).to eq(1)
+        end
+      end
+
+      describe "type conversion" do
+        it "converts integer results correctly" do
+          mock_response = { "choices" => [{ "message" => { "content" => "5.0" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:+, 2, 3) # Both integers
+          expect(result).to eq(5) # Should be integer
+          expect(result).to be_a(Integer)
+        end
+
+        it "keeps float results when one operand is float" do
+          mock_response = { "choices" => [{ "message" => { "content" => "5.5" } }] }
+          allow(mock_openai_client).to receive(:chat).and_return(mock_response)
+          
+          result = client.calculate(:+, 2.5, 3) # One float
+          expect(result).to eq(5.5) # Should be float
+          expect(result).to be_a(Float)
+        end
+      end
+
       it "makes API call with correct parameters" do
+        mock_response = { "choices" => [{ "message" => { "content" => "5" } }] }
+        
         expect(mock_openai_client).to receive(:chat).with(
           parameters: {
             model: "gpt-3.5-turbo",
@@ -164,38 +299,6 @@ RSpec.describe ExpensiveMath do
 
         result = client.calculate(:+, 2, 3)
         expect(result).to eq(5)
-      end
-
-      it "handles boolean responses for comparison operators" do
-        bool_response = {
-          "choices" => [
-            {
-              "message" => {
-                "content" => "true"
-              }
-            }
-          ]
-        }
-        allow(mock_openai_client).to receive(:chat).and_return(bool_response)
-
-        result = client.calculate(:==, 2, 2)
-        expect(result).to be true
-      end
-
-      it "handles spaceship operator responses" do
-        spaceship_response = {
-          "choices" => [
-            {
-              "message" => {
-                "content" => "-1"
-              }
-            }
-          ]
-        }
-        allow(mock_openai_client).to receive(:chat).and_return(spaceship_response)
-
-        result = client.calculate(:<=>, 2, 3)
-        expect(result).to eq(-1)
       end
     end
 
