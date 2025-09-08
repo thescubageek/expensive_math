@@ -28,7 +28,7 @@ module ExpensiveMath
       raise Error, "API key not configured" unless @api_key
 
       prompt = build_prompt(operation, a, b)
-      puts "🤖 Asking AI: #{prompt}"
+      ExpensiveMath.log(:info, "🤖 Asking AI: #{prompt}")
       
       response = make_request(prompt)
       parse_response(response, operation, a, b)
@@ -125,6 +125,14 @@ module ExpensiveMath
       else
         result
       end
+    end
+
+    def fallback_calculation(operation, a, b)
+      # Use the original methods that were aliased during monkey patching
+      original_method = "original_#{operation}".to_sym
+      a.send(original_method, b)
+    rescue NoMethodError
+      raise Error, "Unsupported operation: #{operation}"
     end
   end
 end

@@ -14,7 +14,7 @@ module ExpensiveMath
                 ExpensiveMath::LLMClient.new.calculate(operator, self, other)
               rescue ExpensiveMath::Error => e
                 # Fallback to original method if LLM fails
-                puts "⚠️  LLM failed (#{e.message}), falling back to CPU calculation"
+                ExpensiveMath.log(:warn, "LLM failed (#{e.message}), falling back to CPU calculation")
                 send(original_method, other)
               end
             end
