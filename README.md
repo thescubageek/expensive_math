@@ -1,6 +1,6 @@
 # ExpensiveMath 💸
 
-### The most inefficient, unnecessary, environmentally-destructive, and ridiculously financially expensive way to do basic math! 
+**ExpensiveMath is the most inefficient, unnecessary, environmentally destructive, and absurdly expensive way to do basic math!**
 
 Are you...
 
@@ -9,13 +9,13 @@ Are you...
 - Wanting to watch an infinite loop cost more than the GDP of Luxembourg?
 - Needing to turn `2 + 2` into a distributed systems architecture challenge?
 
-**ExpensiveMath is here to solve these problems!**
+### ExpensiveMath is here to solve these problems!
 
-Why use efficient CPU operations when you can **leverage cutting-edge AI technology** to **disrupt** basic arithmetic? This isn't just math - it's **AI-powered mathematical intelligence as a service**! We're **democratizing computation** by making every addition operation a **scalable, cloud-native, machine learning experience**. 
+Why use efficient CPU operations when you can leverage **cutting-edge AI technology** to **disrupt the status quo of basic arithmetic? This isn't just math - it's **AI-powered mathematical intelligence as a service**! We're **democratizing computation** by making every addition operation a **scalable, cloud-native, machine learning experience**. 
 
-Get with the times and **100,000x your mathematical operations runtime** with the power of **generative AI**! This is the future of math, bro - we're not just doing calculations, we're **building the next generation of intelligent computational workflows**.
+Get with the times and **500,000x your mathematical operations inefficiency** with the power of **generative AI**! This is the future of math, bro - we're not just doing calculations, we're **building the next generation of intelligent computational workflows**.
 
-Perfect for developers who think their math operations aren't nearly expensive, slow, or carbon-intensive enough. Finally, a way to make your calculator app require an internet connection and a monthly subscription to OpenAI!
+Perfect for developers who think their math operations aren't nearly **expensive, slow, or carbon-intensive enough**. Finally, a way to make your calculator app require an internet connection and a monthly subscription to OpenAI!
 
 ## Installation
 
@@ -68,6 +68,7 @@ ExpensiveMath.configure do |config|
   config.api_key = 'your-openai-api-key'
   config.api_endpoint = 'https://api.openai.com/v1/chat/completions'  # default
   config.model = 'gpt-5-nano'  # default
+  config.dry_run = false  # default - set to true for testing without API calls
 end
 ```
 
@@ -131,6 +132,37 @@ puts 2 + 3  # ✅ Uses normal Ruby math (= 5)
 puts ExpensiveMath.enabled?  # => false
 ```
 
+### Dry Run Mode
+
+For testing purposes, you can enable dry run mode to see what operations would be sent to the LLM without actually making API calls or requiring an API key:
+
+```ruby
+require 'expensive_math'
+
+# Configure dry run mode (no API key needed!)
+ExpensiveMath.configure do |config|
+  config.dry_run = true
+  config.logger = Logger.new(STDOUT)  # Optional: see dry run logs
+end
+
+# Enable expensive math
+ExpensiveMath.enable!
+
+# Operations will log what they would do but use normal Ruby math
+puts 2 + 3  # Logs: "DRY RUN: Would ask AI to calculate 2 + 3" → 5
+puts 10 * 5 # Logs: "DRY RUN: Would ask AI to calculate 10 * 5" → 50
+
+# Check dry run status
+puts ExpensiveMath.dry_run?  # => true
+```
+
+**Dry run features:**
+- ✅ Works only when ExpensiveMath is enabled
+- ✅ No API key required
+- ✅ Logs intended operations for debugging
+- ✅ Returns correct mathematical results using normal Ruby operations
+- ✅ Perfect for testing integration without API costs
+
 ## Features
 
 - ✅ Replaces all basic mathematical operators with LLM API calls
@@ -138,6 +170,7 @@ puts ExpensiveMath.enabled?  # => false
 - ✅ Supports comparison operators
 - ✅ Works with integers, floats, rationals, and complex numbers
 - ✅ Configurable LLM endpoint and model
+- ✅ **Dry run mode** for testing without API calls or costs
 - ✅ Guaranteed to be slower and more expensive than regular math
 - ✅ Perfect for burning through your API quota
 - ✅ Might cost you your job
@@ -171,7 +204,7 @@ Here's a performance comparison:
 |-----------|--------------|---------------|---------------|
 | 2 + 2     | 0.001ms      | 500-2000ms    | 500,000x - 2,000,000x |
 | 10 * 5    | 0.001ms      | 500-2000ms    | 500,000x - 2,000,000x |
-| API Cost  | $0.00        | ~$0.002       | ∞ |
+| API Cost  | $0.00        | ~$0.000002    | ∞ |
 
 ## Contributing
 
@@ -183,7 +216,9 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Disclaimer
 
-This gem is intended for educational and entertainment purposes only. Please don't actually use this in production unless you enjoy explaining to your boss why your calculator app has a $100,000 monthly API bill. The author is not responsible for any performance issues or financial damage caused by the use of this gem -- enjoy the lolz but don't be a moron.
+This gem is intended for educational and entertainment purposes only. Please don't actually use this in production unless you enjoy explaining to your boss why your calculator app has a $100,000 monthly API bill. The author is not responsible for any performance issues or financial damage caused by the use of this gem -- enjoy the lulz but don't be a moron.
+
+![And It's Gone](assets/and-its-gone.png)
 
 ---
 

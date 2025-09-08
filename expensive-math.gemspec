@@ -3,8 +3,7 @@ require_relative "lib/expensive_math/version"
 Gem::Specification.new do |spec|
   spec.name          = "expensive-math"
   spec.version       = ExpensiveMath::VERSION
-  spec.authors       = ["Your Name"]
-  spec.email         = ["your.email@example.com"]
+  spec.authors       = ["Steve Craig"]
 
   spec.summary       = "The most expensive way to do basic math"
   spec.description   = "Why use efficient CPU operations when you can make API calls to large language models for simple arithmetic? This gem replaces all mathematical operators with LLM calls, making every calculation delightfully slow and expensive."

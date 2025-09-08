@@ -21,10 +21,22 @@ module ExpensiveMath
     def initialize
       @api_key = ExpensiveMath.api_key
       @model = ExpensiveMath.model
-      @client = OpenAI::Client.new(access_token: @api_key)
+      # Only initialize OpenAI client if not in dry run mode
+      @client = OpenAI::Client.new(access_token: @api_key) unless ExpensiveMath.dry_run?
     end
 
-    def calculate(operation, a, b)
+    def calculate(operation, a, b, original_method_proc = nil)
+      prompt = build_prompt(operation, a, b)
+
+      # In dry run mode, log the operation and call the original method
+      if ExpensiveMath.dry_run?
+        ExpensiveMath.log(:info, "🏃‍♂️ DRY RUN: #{prompt}")
+        sleep(0.5) # sleep to simulate API latency
+        
+        return original_method_proc.call if original_method_proc
+        raise Error, "Dry run mode requires original method proc"
+      end
+
       raise Error, "API key not configured" unless @api_key
 
       prompt = build_prompt(operation, a, b)
@@ -125,14 +137,6 @@ module ExpensiveMath
       else
         result
       end
-    end
-
-    def fallback_calculation(operation, a, b)
-      # Use the original methods that were aliased during monkey patching
-      original_method = "original_#{operation}".to_sym
-      a.send(original_method, b)
-    rescue NoMethodError
-      raise Error, "Unsupported operation: #{operation}"
     end
   end
 end

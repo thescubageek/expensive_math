@@ -5,6 +5,9 @@ module ExpensiveMath
       [Integer, Float, Rational, Complex].each do |klass|
         klass.class_eval do
           ExpensiveMath::LLMClient::OPERATOR_PROMPTS.each_key do |operator|
+            # Only patch operators that exist for this class
+            next unless klass.instance_methods.include?(operator)
+            
             # Store original method
             original_method = "original_#{operator}".to_sym
             alias_method original_method, operator
@@ -16,7 +19,9 @@ module ExpensiveMath
               end
               
               begin
-                ExpensiveMath::LLMClient.new.calculate(operator, self, other)
+                # Create a proc for the original method to pass to the LLM client
+                original_proc = proc { send(original_method, other) }
+                ExpensiveMath::LLMClient.new.calculate(operator, self, other, original_proc)
               rescue ExpensiveMath::Error => e
                 # Fallback to original method if LLM fails
                 ExpensiveMath.log(:warn, "LLM failed (#{e.message}), falling back to CPU calculation")
