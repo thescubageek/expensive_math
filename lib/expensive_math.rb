@@ -8,9 +8,23 @@ module ExpensiveMath
   # Configuration for LLM API
   class << self
     attr_accessor :api_key, :api_endpoint, :model, :logger
+    attr_reader :enabled
+
+    alias_method :enabled?, :enabled
 
     def configure
       yield(self)
+    end
+
+    def enable!
+      return if @enabled
+      
+      Operators.patch_numeric_classes!
+      @enabled = true
+    end
+
+    def disable!
+      @enabled = false
     end
 
     def log(level, message)

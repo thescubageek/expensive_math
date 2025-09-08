@@ -1,6 +1,21 @@
 # ExpensiveMath 💸
 
-The most expensive way to do basic math! Why use efficient CPU operations when you can make API calls to large language models for simple arithmetic?
+### The most inefficient, unnecessary, environmentally-destructive, and ridiculously financially expensive way to do basic math! 
+
+Are you...
+
+- Tired of your calculator app finishing calculations in nanoseconds?
+- Frustrated by the complete lack of network latency in basic arithmetic?
+- Wanting to watch an infinite loop cost more than the GDP of Luxembourg?
+- Needing to turn `2 + 2` into a distributed systems architecture challenge?
+
+**ExpensiveMath is here to solve these problems!**
+
+Why use efficient CPU operations when you can **leverage cutting-edge AI technology** to **disrupt** basic arithmetic? This isn't just math - it's **AI-powered mathematical intelligence as a service**! We're **democratizing computation** by making every addition operation a **scalable, cloud-native, machine learning experience**. 
+
+Get with the times and **100,000x your mathematical operations runtime** with the power of **generative AI**! This is the future of math, bro - we're not just doing calculations, we're **building the next generation of intelligent computational workflows**.
+
+Perfect for developers who think their math operations aren't nearly expensive, slow, or carbon-intensive enough. Finally, a way to make your calculator app require an internet connection and a monthly subscription to OpenAI!
 
 ## Installation
 
@@ -11,16 +26,40 @@ gem 'expensive-math'
 ```
 
 And then execute:
-
+```bash
     $ bundle install
+```
 
 Or install it yourself as:
-
+```bash
     $ gem install expensive-math
+```
+
+Congrats, now your Ruby core now prepared to destroy your bank account doing trivial math!
+
+## Unintallation
+
+**Trust me, you're going to want to do this.** Remove this line from your application's Gemfile:
+
+```ruby
+gem 'expensive-math'
+```
+
+And then execute:
+```bash
+    $ bundle install
+```
+
+Or uninstall it yourself as:
+```bash
+    $ gem uninstall expensive-math
+```
+
+You're welcome!
 
 ## Configuration
 
-Before using ExpensiveMath, you need to configure your LLM API credentials:
+Before using ExpensiveMath, you need to configure your OpenAI API credentials:
 
 ```ruby
 require 'expensive_math'
@@ -32,9 +71,11 @@ ExpensiveMath.configure do |config|
 end
 ```
 
+Now you're ready to blow your budget!
+
 ## Usage
 
-Once configured, all mathematical operations on numbers will automatically use LLM calls:
+ExpensiveMath requires explicit activation to avoid accidentally breaking your Ruby environment:
 
 ```ruby
 require 'expensive_math'
@@ -43,6 +84,9 @@ require 'expensive_math'
 ExpensiveMath.configure do |config|
   config.api_key = ENV['OPENAI_API_KEY']
 end
+
+# IMPORTANT: You must explicitly enable expensive math!
+ExpensiveMath.enable!
 
 # Now every math operation costs money! 💰
 result = 2 + 3        # Makes an API call to calculate 2 + 3
@@ -54,16 +98,49 @@ puts 6 * 7            # Multiplication via LLM
 puts 15 / 3           # Division via LLM
 puts 2 ** 8           # Exponentiation via LLM
 puts 17 % 5           # Modulo via LLM
+puts 5 == 5           # Equality comparison via LLM
+puts 3 < 7            # Less than comparison via LLM
+puts 8 > 2            # Greater than comparison via LLM
+puts 4 <= 4           # Less than or equal via LLM
+puts 9 >= 6           # Greater than or equal via LLM
+puts 5 <=> 3          # Spaceship operator via LLM
+
+# Disable expensive math when you're done or you'll run out of money!
+ExpensiveMath.disable!
+```
+
+### Safety Features
+
+- **Opt-in activation**: Simply requiring the gem won't break your Ruby environment
+- **Easy disable**: Call `ExpensiveMath.disable!` to return to normal Ruby math
+- **Graceful fallback**: If API calls fail, operations fall back to normal CPU calculations
+- **No API key required**: Without an API key, all operations use normal Ruby math
+
+### Enable/Disable Control
+
+```ruby
+# Enable expensive math
+ExpensiveMath.enable!
+puts 2 + 3  # 💸 Uses LLM
+
+# Disable expensive math
+ExpensiveMath.disable!
+puts 2 + 3  # ✅ Uses normal Ruby math (= 5)
+
+# Check status
+puts ExpensiveMath.enabled?  # => false
 ```
 
 ## Features
 
 - ✅ Replaces all basic mathematical operators with LLM API calls
 - ✅ Supports addition, subtraction, multiplication, division, exponentiation, and modulo
-- ✅ Works with integers and floats
+- ✅ Supports comparison operators
+- ✅ Works with integers, floats, rationals, and complex numbers
 - ✅ Configurable LLM endpoint and model
 - ✅ Guaranteed to be slower and more expensive than regular math
 - ✅ Perfect for burning through your API quota
+- ✅ Might cost you your job
 
 ## Why?
 
@@ -78,16 +155,13 @@ Great question! Here are some compelling reasons to use ExpensiveMath:
 
 ## Error Handling
 
-ExpensiveMath includes robust error handling for when your math goes wrong:
+ExpensiveMath automatically handles failures gracefully to ensure your application continues running (albeit expensively):
 
-```ruby
-begin
-  result = 5 + 3
-rescue ExpensiveMath::Error => e
-  puts "Math failed: #{e.message}"
-  # Fallback to regular math? Never!
-end
-```
+1. **Built-in Retry Logic**: Each operator includes exponential backoff retry mechanisms that attempt the LLM call multiple times, maximizing both latency and API costs before giving up.
+
+2. **Automatic Fallback**: When LLM calls fail after retries, operations automatically fall back to the original Ruby math operators that were preserved during monkey patching. This ensures your app doesn't crash - it just continues being brutally slow and expensive.
+
+3. **Transparent Recovery**: The fallback happens seamlessly within each operator call, so your code continues executing without manual error handling. You get the "best" of both worlds: maximum inefficiency when possible, basic functionality when necessary.
 
 ## Performance
 
@@ -109,8 +183,8 @@ The gem is available as open source under the terms of the [MIT License](https:/
 
 ## Disclaimer
 
-This gem is intended for educational and entertainment purposes. Please don't actually use this in production unless you enjoy explaining to your boss why your calculator app has a $10,000 monthly API bill.
+This gem is intended for educational and entertainment purposes only. Please don't actually use this in production unless you enjoy explaining to your boss why your calculator app has a $100,000 monthly API bill. The author is not responsible for any performance issues or financial damage caused by the use of this gem -- enjoy the lolz but don't be a moron.
 
 ---
 
-*"Making simple things complicated since 2024"* - ExpensiveMath Team
+*"Making simple things complicated since 2025"* - ExpensiveMath Team

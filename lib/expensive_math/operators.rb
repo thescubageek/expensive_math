@@ -10,6 +10,11 @@ module ExpensiveMath
             alias_method original_method, operator
             
             define_method(operator) do |other|
+              # Check if ExpensiveMath is enabled
+              unless ExpensiveMath.enabled
+                return send(original_method, other)
+              end
+              
               begin
                 ExpensiveMath::LLMClient.new.calculate(operator, self, other)
               rescue ExpensiveMath::Error => e
@@ -25,5 +30,5 @@ module ExpensiveMath
   end
 end
 
-# Automatically patch numeric classes when the module is loaded
-ExpensiveMath::Operators.patch_numeric_classes!
+# Monkey patching is now opt-in via ExpensiveMath.enable!
+# ExpensiveMath::Operators.patch_numeric_classes!
