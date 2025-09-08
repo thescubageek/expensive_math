@@ -8,6 +8,7 @@ Are you...
 - Frustrated by the complete lack of network latency in basic arithmetic?
 - Wanting to watch an infinite loop cost more than the GDP of Luxembourg?
 - Needing to turn `2 + 2` into a distributed systems architecture challenge?
+- Excited about the chance to break your Ruby environment on a fundamental level?
 
 ### ExpensiveMath is here to solve these problems!
 
@@ -78,20 +79,21 @@ View **[OpenAI's pricing](https://openai.com/pricing)** to choose how quickly yo
 
 ## Usage
 
-ExpensiveMath requires explicit activation to avoid accidentally breaking your Ruby environment:
+ExpensiveMath requires explicit activation:
 
 ```ruby
 require 'expensive_math'
 
-# Configure your API key first
+# Configure your API key first and turn off dry run
 ExpensiveMath.configure do |config|
   config.api_key = ENV['OPENAI_API_KEY']
+  config.dry_run = false
 end
+```
 
-# IMPORTANT: You must explicitly enable expensive math!
-ExpensiveMath.enable!
+Congrats, now your math operations are going to cost you money! 💰
 
-# Now every math operation costs money! 💰
+```
 result = 2 + 3        # Makes an API call to calculate 2 + 3
 puts result           # => 5 (eventually, and expensively)
 
@@ -107,32 +109,25 @@ puts 8 > 2            # Greater than comparison via LLM
 puts 4 <= 4           # Less than or equal via LLM
 puts 9 >= 6           # Greater than or equal via LLM
 puts 5 <=> 3          # Spaceship operator via LLM
-
-# Disable expensive math when you're done or you'll run out of money!
-ExpensiveMath.disable!
 ```
+
+See the [Dry Run Mode](#dry-run-mode) section for more information if you want to preview the cost and performance impact of your math operations without actually making API calls or requiring an API key.
+
+### Safely testing locally
+
+The "safest" way to run this is in dry mode inside of an irb session. This way you can test the gem without actually making API calls or requiring an API key. Note that the gem is _immediately_ bootstrapped meaning even the act of loading Ruby will use the overriden operators.
+
+```shell
+EXPENSIVE_MATH_ENABLED=true irb -I lib -r expensive_math
+```
+
 
 ### Safety Features
 
 - **Opt-in activation**: Simply requiring the gem won't break your Ruby environment
-- **Easy disable**: Call `ExpensiveMath.disable!` to return to normal Ruby math
+- **Dry run mode**: Preview how awful this gem is before you pay for it
 - **Graceful fallback**: If API calls fail, operations fall back to normal CPU calculations
 - **No API key required**: Without an API key, all operations use normal Ruby math
-
-### Enable/Disable Control
-
-```ruby
-# Enable expensive math
-ExpensiveMath.enable!
-puts 2 + 3  # 💸 Uses LLM
-
-# Disable expensive math
-ExpensiveMath.disable!
-puts 2 + 3  # ✅ Uses normal Ruby math (= 5)
-
-# Check status
-puts ExpensiveMath.enabled?  # => false
-```
 
 ### Dry Run Mode
 
