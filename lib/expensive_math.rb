@@ -39,6 +39,6 @@ module ExpensiveMath
 
   # Default configuration
   self.api_endpoint = "https://api.openai.com/v1/chat/completions"
-  self.model = "gpt-3.5-turbo"
+  self.model = "gpt-5-nano"
   self.logger = nil
 end

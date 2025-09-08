@@ -57,7 +57,7 @@ RSpec.describe ExpensiveMath do
 
     it "has default values" do
       expect(ExpensiveMath.api_endpoint).to eq("https://api.openai.com/v1/chat/completions")
-      expect(ExpensiveMath.model).to eq("gpt-3.5-turbo")
+      expect(ExpensiveMath.model).to eq("gpt-5-nano")
       expect(ExpensiveMath.logger).to be_nil
     end
   end
@@ -125,7 +125,7 @@ RSpec.describe ExpensiveMath do
 
     it "initializes with configured values" do
       expect(client.instance_variable_get(:@api_key)).to eq("test-key")
-      expect(client.instance_variable_get(:@model)).to eq("gpt-3.5-turbo")
+      expect(client.instance_variable_get(:@model)).to eq("gpt-5-nano")
       expect(client.instance_variable_get(:@client)).to eq(mock_openai_client)
     end
 
@@ -290,7 +290,7 @@ RSpec.describe ExpensiveMath do
         
         expect(mock_openai_client).to receive(:chat).with(
           parameters: {
-            model: "gpt-3.5-turbo",
+            model: "gpt-5-nano",
             messages: [{ role: "user", content: "What is the sum of 2 and 3? Return the result as a single number." }],
             max_tokens: 50,
             temperature: 0

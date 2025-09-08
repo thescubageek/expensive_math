@@ -59,7 +59,7 @@ You're welcome!
 
 ## Configuration
 
-Before using ExpensiveMath, you need to configure your OpenAI API credentials:
+Before using ExpensiveMath, you need to configure your **[OpenAI API key](https://platform.openai.com/api-keys)**:
 
 ```ruby
 require 'expensive_math'
@@ -67,11 +67,11 @@ require 'expensive_math'
 ExpensiveMath.configure do |config|
   config.api_key = 'your-openai-api-key'
   config.api_endpoint = 'https://api.openai.com/v1/chat/completions'  # default
-  config.model = 'gpt-3.5-turbo'  # default
+  config.model = 'gpt-5-nano'  # default
 end
 ```
 
-Now you're ready to blow your budget!
+View **[OpenAI's pricing](https://openai.com/pricing)** to choose how quickly you want to go into crippling debt.
 
 ## Usage
 
