@@ -115,7 +115,7 @@ See the [Dry Run Mode](#dry-run-mode) section for more information if you want t
 
 ### Safely testing locally
 
-The "safest" way to run this is in dry mode inside of an irb session. This way you can test the gem without actually making API calls or requiring an API key. Note that the gem is _immediately_ bootstrapped meaning even the act of loading Ruby will use the overriden operators.
+The "safest" way to run this is in dry mode inside of an irb session. This way you can test the gem without actually making API calls or requiring an API key. Note that the gem is _immediately_ monkeypatched meaning even the act of loading Ruby will use the overriden operators.
 
 ```shell
 EXPENSIVE_MATH_ENABLED=true irb -I lib -r expensive_math
