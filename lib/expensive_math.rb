@@ -29,6 +29,7 @@ module ExpensiveMath
       @operators_patched = true
       with_original_operators do
         require_relative "expensive_math/operators"
+        setup_signal_handlers
       end
     end
 
@@ -71,6 +72,28 @@ module ExpensiveMath
 
     def print_estimation_details(expression)
       Estimate.print_estimation_details(expression)
+    end
+
+    private
+
+    def setup_signal_handlers
+      # Set up SIGINT handler that uses original operators to avoid infinite loops
+      Signal.trap('INT') do
+        with_original_operators do
+          puts "\n[ExpensiveMath] SIGINT received - deactivating expensive math and exiting..."
+          @operators_patched = false
+          exit(0)
+        end
+      end
+
+      # Also handle SIGTERM for graceful shutdown
+      Signal.trap('TERM') do
+        with_original_operators do
+          puts "\n[ExpensiveMath] SIGTERM received - deactivating expensive math and exiting..."
+          @operators_patched = false
+          exit(0)
+        end
+      end
     end
   end
 
