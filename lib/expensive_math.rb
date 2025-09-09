@@ -4,13 +4,14 @@ require_relative "expensive_math/version"
 require_relative "expensive_math/llm_client"
 require_relative "expensive_math/formatter"
 require_relative "expensive_math/estimate"
+require_relative "expensive_math/operators"
 
 module ExpensiveMath
   class Error < StandardError; end
 
   # Configuration for LLM API
   class << self
-    attr_accessor :api_key, :api_endpoint, :model, :logger, :dry_run
+    attr_accessor :api_key, :api_endpoint, :model, :logger, :dry_run, :total_expenses
 
     alias_method :dry_run?, :dry_run
 
@@ -27,8 +28,9 @@ module ExpensiveMath
       
       # Set flag first, then require operators
       @operators_patched = true
+      @expenses = 0
       with_original_operators do
-        require_relative "expensive_math/operators"
+        Operators.activate!
         setup_signal_handlers
       end
     end

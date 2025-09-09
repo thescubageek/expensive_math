@@ -9,6 +9,7 @@ Are you...
 - Wanting to watch an infinite loop cost more than the GDP of Luxembourg?
 - Needing to turn `2 + 2` into a distributed systems architecture challenge?
 - Excited about the chance to break your Ruby environment on a fundamental level?
+- 
 
 ### ExpensiveMath is here to solve these problems!
 
@@ -30,7 +31,8 @@ Perfect for developers who think their math operations aren't nearly **expensive
 - ✅ Dry run mode for testing without API calls or costs
 - ✅ Guaranteed to be slower and more expensive than regular math
 - ✅ Perfect for burning through your API quota
-- ✅ Might cost you your job
+- ✅ Racks up hundreds or thousands of dollars in API calls within minutes just from loading the gem and running basic Ruby code
+- ✅ Might cost you your job, spouse, kids, and home
 
 ## Why?
 
@@ -53,12 +55,12 @@ gem 'expensive-math'
 
 And then execute:
 ```bash
-    $ bundle install
+bundle install
 ```
 
 Or install it yourself as:
 ```bash
-    $ gem install expensive-math
+gem install expensive-math
 ```
 
 Congrats, now your Ruby core now prepared to destroy your bank account doing trivial math!
@@ -73,12 +75,12 @@ gem 'expensive-math'
 
 And then execute:
 ```bash
-    $ bundle install
+bundle install
 ```
 
 Or uninstall it yourself as:
 ```bash
-    $ gem uninstall expensive-math
+gem uninstall expensive-math
 ```
 
 You're welcome!

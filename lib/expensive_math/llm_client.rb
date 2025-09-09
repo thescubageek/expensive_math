@@ -29,12 +29,12 @@ module ExpensiveMath
       :%,   # Modulo
       :+,   # Addition
       :-,   # Subtraction
-      :==,  # Equality
+      :<=>, # Spaceship operator (most complex comparison)
+      :<=,  # Less than or equal (may use == internally)
+      :>=,  # Greater than or equal (may use == internally)
       :<,   # Less than
       :>,   # Greater than
-      :<=,  # Less than or equal
-      :>=,  # Greater than or equal
-      :<=>  # Spaceship operator
+      :==   # Equality (fundamental - patch last)
     ].freeze
 
     # Class-level cache shared across all instances -- without this it's literally unsuable ie the gem won't load
