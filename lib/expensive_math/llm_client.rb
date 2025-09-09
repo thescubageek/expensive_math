@@ -39,6 +39,10 @@ module ExpensiveMath
 
     # Class-level cache shared across all instances -- without this it's literally unsuable ie the gem won't load
     @@cache = {}
+    
+    # Expense tracking for dry run mode
+    @@total_dry_run_cost = 0.0
+    ESTIMATED_COST_PER_CALL = 0.000002 # Rough estimate for a simple math operation
 
     def initialize
       @api_key = ExpensiveMath.api_key
@@ -65,6 +69,14 @@ module ExpensiveMath
     def self.cache_size
       @@cache.size
     end
+    
+    def self.reset_dry_run_cost!
+      @@total_dry_run_cost = 0.0
+    end
+    
+    def self.total_dry_run_cost
+      @@total_dry_run_cost
+    end
 
     def calculate(operation, a, b, original_method_proc = nil)
       # Check for initialization errors first
@@ -77,7 +89,7 @@ module ExpensiveMath
       
       # Check cache first
       if @@cache.key?(cache_key)
-        ExpensiveMath.log(:info, "💾 Cache hit for \"#{cache_key}\"")
+        ExpensiveMath.log(:info, "💾 Cache hit for \"#{cache_key}\"") if ExpensiveMath.log_cache_hits?
         return @@cache[cache_key]
       end
 
@@ -85,15 +97,7 @@ module ExpensiveMath
 
       # In dry run mode, log the operation and call the original method
       if ExpensiveMath.dry_run?
-        ExpensiveMath.log(:info, "🏃‍♂️ DRY RUN: #{prompt}")
-        sleep(0.5) # sleep to simulate API latency
-
-        result = original_method_proc ? original_method_proc.call : nil
-        if result.nil?
-          raise Error, "Dry run mode requires original method proc"
-        end
-        
-        # Cache the result even in dry run mode
+        result = handle_dry_run(prompt, original_method_proc)
         @@cache[cache_key] = result
         return result
       end
@@ -118,28 +122,56 @@ module ExpensiveMath
 
     private
 
+    def handle_dry_run(prompt, original_method_proc)
+      result = nil
+
+      ExpensiveMath.with_original_operators do
+        # Track expense for dry run
+        @@total_dry_run_cost += ESTIMATED_COST_PER_CALL
+        formatted_total = format_cost(@@total_dry_run_cost)
+        ExpensiveMath.log(:info, "🏃‍♂️ DRY RUN: #{prompt} (Total cost: #{formatted_total})")
+
+        result = original_method_proc ? original_method_proc.call : nil
+      end
+
+      if result.nil?
+        raise Error, "Dry run mode requires original method proc"
+      end
+      ExpensiveMath.log(:info, "-> #{result}")
+
+      sleep(0.5) if ExpensiveMath.use_sleep? # sleep to simulate API latency
+      
+      result
+    end
+
     def generate_cache_key(operation, a, b)
       # Create a deterministic key from operation and operands
-      "#{operation}:#{a.class.name}:#{a}:#{b.class.name}:#{b}"
+      # Use original operators to avoid triggering expensive math during caching
+      ExpensiveMath.with_original_operators do
+        "#{operation}:#{a.class.name}:#{a}:#{b.class.name}:#{b}"
+      end
     end
 
     def build_prompt(operation, a, b)
-      prompt_start = OPERATOR_PROMPTS[operation]
-      raise Error, "Unsupported operation: #{operation}" unless prompt_start
+      # Use original operators to avoid triggering expensive math during prompt building
+      ExpensiveMath.with_original_operators do
+        prompt_start = OPERATOR_PROMPTS[operation]
+        raise Error, "Unsupported operation: #{operation}" unless prompt_start
 
-      case operation
-      when :**
-        "#{prompt_start} #{a} to the power of #{b}? Return the result as a single number."
-      when :==, :<, :>, :<=, :>=
-        "#{prompt_start} #{a} and #{b}? Answer only 'true' or 'false'."
-      when :<=>
-        "#{prompt_start} #{a} and #{b}."
-      when :%
-        "#{prompt_start} #{a} by #{b}? Return the remainder as a single number."
-      when :/
-        "#{prompt_start} #{a} by #{b}? Return the result as a single number."
-      else
-        "#{prompt_start} #{a} and #{b}? Return the result as a single number."
+        case operation
+        when :**
+          "#{prompt_start} #{a} to the power of #{b}? Return the result as a single number."
+        when :==, :<, :>, :<=, :>=
+          "#{prompt_start} #{a} and #{b}? Answer only 'true' or 'false'."
+        when :<=>
+          "#{prompt_start} #{a} and #{b}."
+        when :%
+          "#{prompt_start} #{a} by #{b}? Return the remainder as a single number."
+        when :/
+          "#{prompt_start} #{a} by #{b}? Return the result as a single number."
+        else
+          "#{prompt_start} #{a} and #{b}? Return the result as a single number."
+        end
       end
     end
 
@@ -172,14 +204,34 @@ module ExpensiveMath
 
     private
 
+    def format_cost(cost)
+      ExpensiveMath.with_original_operators do
+        return "$0.00" if cost == 0
+
+        # Format with high precision and remove trailing zeros
+        formatted = sprintf("%.15f", cost).sub(/\.?0+$/, '')
+
+        # Ensure we have at least 2 decimal places for readability
+        if !formatted.include?('.')
+          formatted += ".00"
+        elsif formatted.split('.')[1].length < 2
+          formatted += "0" * (2 - formatted.split('.')[1].length)
+        end
+
+        "$#{formatted}"
+      end
+    end
+
     def retryable_error?(error)
-      case error
-      when OpenAI::RateLimitError, OpenAI::TimeoutError
-        true
-      when OpenAI::APIError
-        error.code&.between?(500, 599) || error.code == 429
-      else
-        false
+      ExpensiveMath.with_original_operators do
+        case error
+        when OpenAI::RateLimitError, OpenAI::TimeoutError
+          true
+        when OpenAI::APIError
+          error.code&.between?(500, 599) || error.code == 429
+        else
+          false
+        end
       end
     end
 

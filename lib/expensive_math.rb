@@ -11,9 +11,11 @@ module ExpensiveMath
 
   # Configuration for LLM API
   class << self
-    attr_accessor :api_key, :api_endpoint, :model, :logger, :dry_run, :total_expenses
+    attr_accessor :api_key, :api_endpoint, :model, :logger, :dry_run, :use_sleep, :log_cache_hits
 
     alias_method :dry_run?, :dry_run
+    alias_method :use_sleep?, :use_sleep
+    alias_method :log_cache_hits?, :log_cache_hits
 
     def configure
       yield(self)
@@ -23,12 +25,15 @@ module ExpensiveMath
       @operators_patched && !Thread.current[:expensive_math_disabled]
     end
 
+    def use_sleep?
+      @use_sleep && dry_run?
+    end
+
     def activate!
       return if @operators_patched
-      
+
       # Set flag first, then require operators
       @operators_patched = true
-      @expenses = 0
       with_original_operators do
         Operators.activate!
         setup_signal_handlers
@@ -104,4 +109,6 @@ module ExpensiveMath
   self.model = "gpt-5-nano"
   self.logger = nil
   self.dry_run = true # Default to dry run mode
+  self.use_sleep = false # Use sleep to simulate API latency -- only works in dry run mode
+  self.log_cache_hits = false # Log cache hits
 end

@@ -4,12 +4,11 @@
 
 Are you...
 
-- Tired of your calculator app finishing calculations in nanoseconds?
+- Tired of your calculator app finishing calculations in milliseconds?
 - Frustrated by the complete lack of network latency in basic arithmetic?
 - Wanting to watch an infinite loop cost more than the GDP of Luxembourg?
 - Needing to turn `2 + 2` into a distributed systems architecture challenge?
 - Excited about the chance to break your Ruby environment on a fundamental level?
-- 
 
 ### ExpensiveMath is here to solve these problems!
 
@@ -17,7 +16,9 @@ Why use efficient CPU operations when you can leverage **cutting-edge AI technol
 
 This isn't just math - it's **AI-powered mathematical intelligence as a service**! We're **democratizing computation** by making every addition operation a **scalable, cloud-native, machine learning experience**. 
 
-With the power of **generative AI**, you can extend your mathematic operations runtime by over a **staggering 100 MILLION PERCENT! This is the future of math, bro - we're not just doing calculations, we're **building the next generation of intelligent computational workflows**.
+With the power of **generative AI**, you can extend your mathematic operations runtime by over a **staggering 100 MILLION PERCENT!** 
+
+**This is the future of math!** - we're not just doing calculations, we're **building the next generation of intelligent computational workflows**.
 
 Perfect for developers who think their math operations aren't nearly **expensive, slow, or carbon-intensive enough**. Finally, a way to make your calculator app require an internet connection and a monthly subscription to OpenAI!
 
@@ -31,14 +32,15 @@ Perfect for developers who think their math operations aren't nearly **expensive
 - ✅ Dry run mode for testing without API calls or costs
 - ✅ Guaranteed to be slower and more expensive than regular math
 - ✅ Perfect for burning through your API quota
-- ✅ Racks up hundreds or thousands of dollars in API calls within minutes just from loading the gem and running basic Ruby code
+- ✅ Racks up bills within minutes just from loading the gem and running basic Ruby code
+- ✅ Charges you per character just from typing in the console
 - ✅ Might cost you your job, spouse, kids, and home
 
 ## Why?
 
 Great question! Here are some compelling reasons to use ExpensiveMath:
 
-1. **Cost Optimization**: Why spend $0.00 on CPU cycles when you can spend $0.002 per calculation?
+1. **Cost Optimization**: Why spend $0.00 on CPU cycles when you can spend hard earned cash per calculation?
 2. **Latency Enhancement**: Transform microsecond operations into multi-second adventures
 3. **Carbon Footprint Maximization**: Ensure your simple arithmetic contributes to global warming
 4. **Dependency Injection**: Add network dependencies to the most basic operations
@@ -191,7 +193,7 @@ require 'expensive_math'
 ExpensiveMath.configure do |config|
   config.api_key = ENV['OPENAI_API_KEY']  # Your financial doom awaits
   config.dry_run = false                  # 🚨 DANGER ZONE: Real API calls ahead!
-  config.model = 'gpt-4'                  # Why not use the MOST expensive model?
+  config.model = 'gpt-5-nano'             # Or use even MORE expensive models if you want
   config.logger = Logger.new(STDOUT)      # Watch your money disappear in real-time
 end
 
@@ -211,13 +213,15 @@ ExpensiveMath.deactivate!  # Your wallet will thank you (what's left of it)
 ```
 
 **Congratulations!** You've successfully:
-- 🔥 Transformed microsecond operations into multi-second adventures
+- 🔥 Transformed microsecond operations into multisecond overhead
 - 💸 Converted free CPU cycles into expensive API calls
-- 🌍 Maximized your carbon footprint with every addition
+- 🌍 Destroyed the rainforest with every addition
 - 📈 Created the world's most inefficient calculator
 - 🎯 Achieved peak software engineering excellence
 
 **Pro tip:** For maximum chaos, forget to call `deactivate!` and watch as **every mathematical operation in your entire Ruby application** becomes a network request. Your production logs will look like a DDoS attack, but it's just your app trying to calculate `array.length + 1`.
+
+**Pro++ tip:** Make sure to set your OpenAI account to [disable pre-paid billing and automatically top up your credits](https://platform.openai.com/account/billing/autofill) should you run out. This way you can maximize your financial destruction. 😈
 
 ### Activation Control
 
@@ -351,13 +355,21 @@ ExpensiveMath automatically handles failures gracefully to ensure your applicati
 
 Bug reports and pull requests are welcome! Please ensure all mathematical operations remain as inefficient as possible.
 
+## Future Plans
+
+- Add blockchain-based proof of work to ensure your calculations are secure and tamper-proof, ensuring every single operation is verifiable and auditable
+- Use blockchain as caching mechanism, ensuring that we have to traverse the chain everytime we want to determine if an operation has been previously computed
+- Introduce Web3 to enable peer-to-peer sharing of calculations, allowing users to contribute their computing resources to the network and earn rewards for their participation
+- Implement agentic architecture to enable autonomous AI agents to perform calculations in a swarm on behalf of users, allowing for greater costs and complexity
+- Create our own shitcoin and NFTs so that we can get rich off of noobs
+
 ## License
 
 The gem is available as open source under the terms of the [MIT License](https://opensource.org/licenses/MIT).
 
 ## Disclaimer
 
-This gem is intended for educational and entertainment purposes only. Please don't actually use this in production unless you enjoy explaining to your boss why your calculator app has a $100,000 monthly API bill. The author is not responsible for any performance issues or financial damage caused by the use of this gem -- enjoy the lulz but don't be a moron.
+This gem is intended for educational and entertainment purposes only. Please don't actually use this in production unless you enjoy explaining to your boss why your calculator app has a $100,000 daily API bill. The author is not responsible for any performance issues or financial damage caused by the use of this gem -- enjoy the lulz but don't be a moron.
 
 ![And It's Gone](assets/and-its-gone.png)
 
