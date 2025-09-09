@@ -40,12 +40,13 @@ Perfect for developers who think their math operations aren't nearly **expensive
 
 Great question! Here are some compelling reasons to use ExpensiveMath:
 
-1. **Cost Optimization**: Why spend $0.00 on CPU cycles when you can spend hard earned cash per calculation?
+1. **Cost Optimization**: Why spend $0.00 on CPU cycles when you can burn hard earned cash per calculation?
 2. **Latency Enhancement**: Transform microsecond operations into multi-second adventures
 3. **Carbon Footprint Maximization**: Ensure your simple arithmetic contributes to global warming
 4. **Dependency Injection**: Add network dependencies to the most basic operations
 5. **Debugging Complexity**: Turn `2 + 2 = 4` into a distributed systems problem
 6. **Rate Limiting Fun**: Experience the joy of being throttled while calculating your grocery bill
+7. **Debugging Hell**: Beat Schrodinger's Cat to death (or life) with non-deterministic results
 
 ## Installation
 
