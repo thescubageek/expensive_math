@@ -19,15 +19,45 @@ module ExpensiveMath
     end
 
     def enabled?
-      ENV['EXPENSIVE_MATH_ENABLED'] == 'true'
+      @operators_patched && !Thread.current[:expensive_math_disabled]
+    end
+
+    def activate!
+      return if @operators_patched
+      
+      # Set flag first, then require operators
+      @operators_patched = true
+      with_original_operators do
+        require_relative "expensive_math/operators"
+      end
+    end
+
+    def deactivate!
+      # Note: Cannot truly unmonkeypatch in Ruby, but we can disable via enabled? check
+      @operators_patched = false
+    end
+
+    def activated?
+      !!@operators_patched
+    end
+
+    def with_original_operators
+      old_value = Thread.current[:expensive_math_disabled]
+      Thread.current[:expensive_math_disabled] = true
+      yield
+    ensure
+      Thread.current[:expensive_math_disabled] = old_value
     end
 
     def log(level, message)
-      if logger
-        logger.send(level, "[ExpensiveMath] #{message}")
-      else
-        # Fallback to stderr for warnings/errors if no logger configured
-        $stderr.puts "[ExpensiveMath] #{level.upcase}: #{message}"
+      # Use original operators for logging to avoid infinite loops
+      with_original_operators do
+        if logger
+          logger.send(level, "[ExpensiveMath] #{message}")
+        else
+          # Fallback to stderr for warnings/errors if no logger configured
+          $stderr.puts "[ExpensiveMath] #{level.upcase}: #{message}"
+        end
       end
     end
 
@@ -49,9 +79,4 @@ module ExpensiveMath
   self.model = "gpt-5-nano"
   self.logger = nil
   self.dry_run = true # Default to dry run mode
-end
-
-# Load operators if enabled
-if ExpensiveMath.enabled?
-  require_relative "expensive_math/operators"
 end

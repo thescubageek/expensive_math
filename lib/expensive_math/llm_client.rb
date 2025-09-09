@@ -20,19 +20,41 @@ module ExpensiveMath
       :<=> => "Compare these two numbers (-1 if first is smaller, 0 if equal, 1 if first is larger):"
     }.freeze
 
+    # Patch operators in reverse order of precedence to avoid triggering during patching
+    # High precedence operators first, fundamental operators (+, -, ==) last
+    OPERATOR_OVERRIDE_ORDER = [
+      :**,  # Exponentiation (highest precedence)
+      :*,   # Multiplication
+      :/,   # Division
+      :%,   # Modulo
+      :+,   # Addition
+      :-,   # Subtraction
+      :==,  # Equality
+      :<,   # Less than
+      :>,   # Greater than
+      :<=,  # Less than or equal
+      :>=,  # Greater than or equal
+      :<=>  # Spaceship operator
+    ].freeze
+
     # Class-level cache shared across all instances -- without this it's literally unsuable ie the gem won't load
     @@cache = {}
 
     def initialize
       @api_key = ExpensiveMath.api_key
       @model = ExpensiveMath.model
-      
-      begin
-        # Only initialize OpenAI client if not in dry run mode
-        @client = OpenAI::Client.new(access_token: @api_key) unless ExpensiveMath.dry_run?
-      rescue => e
-        # If initialization fails, store the error but don't raise it yet
-        @initialization_error = e
+      @client = nil
+      @initialization_error = nil
+
+      # Use original operators for OpenAI client initialization to avoid infinite loops
+      ExpensiveMath.with_original_operators do
+        begin
+          # Only initialize OpenAI client if not in dry run mode
+          @client = OpenAI::Client.new(access_token: @api_key) unless ExpensiveMath.dry_run?
+        rescue => e
+          # If initialization fails, store the error but don't raise it yet
+          @initialization_error = e
+        end
       end
     end
 
@@ -122,25 +144,28 @@ module ExpensiveMath
     end
 
     def make_request(prompt)
-      max_retries = 3
-      base_delay = 1
+      # Use original operators for API calls to avoid infinite loops
+      ExpensiveMath.with_original_operators do
+        max_retries = 3
+        base_delay = 1
 
-      (0..max_retries).each do |attempt|
-        begin
-          return @client.chat(
-            parameters: {
-              model: @model,
-              messages: [{ role: "user", content: prompt }],
-              max_tokens: 50,
-              temperature: 0
-            }
-          )
-        rescue => e
-          raise e unless retryable_error?(e) && attempt < max_retries
+        (0..max_retries).each do |attempt|
+          begin
+            return @client.chat(
+              parameters: {
+                model: @model,
+                messages: [{ role: "user", content: prompt }],
+                max_tokens: 50,
+                temperature: 0
+              }
+            )
+          rescue => e
+            raise e unless retryable_error?(e) && attempt < max_retries
 
-          delay = base_delay * (2 ** attempt) + rand(0.1..0.5) # Exponential backoff with jitter
-          sleep(delay)
-          next
+            delay = base_delay * (2 ** attempt) + rand(0.1..0.5) # Exponential backoff with jitter
+            sleep(delay)
+            next
+          end
         end
       end
     end
@@ -159,39 +184,45 @@ module ExpensiveMath
     end
 
     def parse_response(response, operation, a, b)
-      content = response.dig("choices", 0, "message", "content")
-      result_text = content.strip
+      # Use original operators for response parsing to avoid infinite loops
+      ExpensiveMath.with_original_operators do
+        content = response.dig("choices", 0, "message", "content")
+        result_text = content.strip
 
-      # Parse response based on operator type
-      case operation
-      when :==, :<, :>, :<=, :>=
-        result_text.downcase == 'true'
-      when :<=>
-        result_text.to_i.clamp(-1, 1)
-      else
-        # Convert back to appropriate numeric type based on operands
-        result = result_text.to_f
-        convert_to_appropriate_type(result, a, b, operation)
+        # Parse response based on operator type
+        case operation
+        when :==, :<, :>, :<=, :>=
+          result_text.downcase == 'true'
+        when :<=>
+          result_text.to_i.clamp(-1, 1)
+        else
+          # Convert back to appropriate numeric type based on operands
+          result = result_text.to_f
+          convert_to_appropriate_type(result, a, b, operation)
+        end
       end
     end
 
     def convert_to_appropriate_type(result, a, b, operation = nil)
-      case a
-      when Integer
-        # Division should always return float, even with integer operands
-        if operation == :/ || b.is_a?(Float)
+      # Use original operators for type conversion to avoid infinite loops
+      ExpensiveMath.with_original_operators do
+        case a
+        when Integer
+          # Division should always return float, even with integer operands
+          if operation == :/ || b.is_a?(Float)
+            result
+          else
+            result.to_i
+          end
+        when Float
           result
+        when Rational
+          Rational(result)
+        when Complex
+          Complex(result)
         else
-          result.to_i
+          result
         end
-      when Float
-        result
-      when Rational
-        Rational(result)
-      when Complex
-        Complex(result)
-      else
-        result
       end
     end
   end

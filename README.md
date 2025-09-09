@@ -20,6 +20,29 @@ With the power of **generative AI**, you can extend your mathematic operations r
 
 Perfect for developers who think their math operations aren't nearly **expensive, slow, or carbon-intensive enough**. Finally, a way to make your calculator app require an internet connection and a monthly subscription to OpenAI!
 
+## Features
+
+- ✅ Replaces all basic mathematical operators with OpenAI API calls
+- ✅ Supports addition, subtraction, multiplication, division, exponentiation, and modulo
+- ✅ Supports comparison operators
+- ✅ Works with integers, floats, rationals, and complex numbers
+- ✅ Configurable LLM endpoint and model
+- ✅ Dry run mode for testing without API calls or costs
+- ✅ Guaranteed to be slower and more expensive than regular math
+- ✅ Perfect for burning through your API quota
+- ✅ Might cost you your job
+
+## Why?
+
+Great question! Here are some compelling reasons to use ExpensiveMath:
+
+1. **Cost Optimization**: Why spend $0.00 on CPU cycles when you can spend $0.002 per calculation?
+2. **Latency Enhancement**: Transform microsecond operations into multi-second adventures
+3. **Carbon Footprint Maximization**: Ensure your simple arithmetic contributes to global warming
+4. **Dependency Injection**: Add network dependencies to the most basic operations
+5. **Debugging Complexity**: Turn `2 + 2 = 4` into a distributed systems problem
+6. **Rate Limiting Fun**: Experience the joy of being throttled while calculating your grocery bill
+
 ## Installation
 
 Add this line to your application's Gemfile:
@@ -79,21 +102,21 @@ View **[OpenAI's pricing](https://openai.com/pricing)** to choose how quickly yo
 
 ## Usage
 
-ExpensiveMath requires explicit activation:
+ExpensiveMath requires explicit activation to avoid accidentally breaking your Ruby environment:
 
 ```ruby
 require 'expensive_math'
 
-# Configure your API key first and turn off dry run
+# Configure your API key first
 ExpensiveMath.configure do |config|
   config.api_key = ENV['OPENAI_API_KEY']
-  config.dry_run = false
+  config.dry_run = false  # Set to true for testing without API calls
 end
-```
 
-Congrats, now your math operations are going to cost you money! 💰
+# IMPORTANT: You must explicitly activate expensive math!
+ExpensiveMath.activate!
 
-```
+# Now every math operation costs money! 💰
 result = 2 + 3        # Makes an API call to calculate 2 + 3
 puts result           # => 5 (eventually, and expensively)
 
@@ -109,18 +132,105 @@ puts 8 > 2            # Greater than comparison via LLM
 puts 4 <= 4           # Less than or equal via LLM
 puts 9 >= 6           # Greater than or equal via LLM
 puts 5 <=> 3          # Spaceship operator via LLM
+
+# Disable expensive math when you're done or you'll run out of money!
+ExpensiveMath.deactivate!
 ```
 
 See the [Dry Run Mode](#dry-run-mode) section for more information if you want to preview the cost and performance impact of your math operations without actually making API calls or requiring an API key.
 
-### Safely testing locally
+### Safely Testing Locally (Dry Run Mode)
 
-The "safest" way to run this is in dry mode inside of an irb session. This way you can test the gem without actually making API calls or requiring an API key. Note that the gem is _immediately_ monkeypatched meaning even the act of loading Ruby will use the overriden operators.
+The "safest" way to test ExpensiveMath is in dry run mode, which lets you see what operations would be sent to the LLM without actually making API calls or requiring an API key:
 
 ```shell
-EXPENSIVE_MATH_ENABLED=true irb -I lib -r expensive_math
+irb -I lib -r expensive_math
 ```
 
+Then in IRB:
+```ruby
+require 'expensive_math'
+
+# Configure dry run mode (no API key needed!)
+ExpensiveMath.configure do |config|
+  config.dry_run = true
+  config.logger = Logger.new(STDOUT)  # Optional: see logs
+end
+
+# Activate expensive math
+ExpensiveMath.activate!
+
+# Operations will log what they would do but use normal Ruby math
+puts 2 + 3  # Logs: "DRY RUN: What is the sum of 2 and 3?" → 5
+puts 10 * 5 # Logs: "DRY RUN: What is the product of 10 and 5?" → 50
+
+# Check dry run status
+puts ExpensiveMath.dry_run?  # => true
+
+# Disable when done
+ExpensiveMath.deactivate!
+```
+
+**Dry run features:**
+- ✅ Works only when ExpensiveMath is activated
+- ✅ No API key required
+- ✅ Logs intended operations for debugging
+- ✅ Returns correct mathematical results using normal Ruby operations
+- ✅ Perfect for testing integration without API costs
+
+### Unleash Hell 🔥💸
+
+Ready to **completely obliterate your bank account** and turn your blazing-fast Ruby application into a **sluggish, network-dependent nightmare**? Here's how to activate **full GPT mode** and watch your finances evaporate in real-time:
+
+```ruby
+require 'expensive_math'
+
+# Step 1: Configure your soon-to-be-empty wallet
+ExpensiveMath.configure do |config|
+  config.api_key = ENV['OPENAI_API_KEY']  # Your financial doom awaits
+  config.dry_run = false                  # 🚨 DANGER ZONE: Real API calls ahead!
+  config.model = 'gpt-4'                  # Why not use the MOST expensive model?
+  config.logger = Logger.new(STDOUT)      # Watch your money disappear in real-time
+end
+
+# Step 2: Activate the financial apocalypse
+ExpensiveMath.activate!
+
+# Step 3: Enjoy watching simple math operations cost more than your coffee
+puts 2 + 2          # 💸 $0.002 and 3 seconds later... => 4
+puts 10 * 5         # 💸 Another $0.002 and 3 more seconds... => 50
+puts 100 / 4        # 💸 Your API quota is crying... => 25
+
+# Step 4: For maximum financial destruction, try some loops!
+(1..10).each { |i| puts i + 1 }  # 💸💸💸 $0.02 and 30 seconds of pure inefficiency
+
+# Step 5: Don't forget to deactivate... if you remember... if you can afford to...
+ExpensiveMath.deactivate!  # Your wallet will thank you (what's left of it)
+```
+
+**Congratulations!** You've successfully:
+- 🔥 Transformed microsecond operations into multi-second adventures
+- 💸 Converted free CPU cycles into expensive API calls
+- 🌍 Maximized your carbon footprint with every addition
+- 📈 Created the world's most inefficient calculator
+- 🎯 Achieved peak software engineering excellence
+
+**Pro tip:** For maximum chaos, forget to call `deactivate!` and watch as **every mathematical operation in your entire Ruby application** becomes a network request. Your production logs will look like a DDoS attack, but it's just your app trying to calculate `array.length + 1`.
+
+### Activation Control
+
+```ruby
+# Enable expensive math
+ExpensiveMath.activate!
+puts 2 + 3  # 💸 Uses LLM (or dry run)
+
+# Disable expensive math
+ExpensiveMath.deactivate!
+puts 2 + 3  # ✅ Uses normal Ruby math (= 5)
+
+# Check status
+puts ExpensiveMath.activated?  # => false
+```
 
 ### Safety Features
 
@@ -129,36 +239,25 @@ EXPENSIVE_MATH_ENABLED=true irb -I lib -r expensive_math
 - **Graceful fallback**: If API calls fail, operations fall back to normal CPU calculations
 - **No API key required**: Without an API key, all operations use normal Ruby math
 
-### Dry Run Mode
+## Running Tests
 
-For testing purposes, you can enable dry run mode to see what operations would be sent to the LLM without actually making API calls or requiring an API key:
+To run the test suite:
 
-```ruby
-require 'expensive_math'
+```bash
+# Run all specs
+bundle exec rspec
 
-# Configure dry run mode (no API key needed!)
-ExpensiveMath.configure do |config|
-  config.dry_run = true
-  config.logger = Logger.new(STDOUT)  # Optional: see dry run logs
-end
+# Run specs with verbose output
+bundle exec rspec --format documentation
 
-# Enable expensive math
-ExpensiveMath.enable!
+# Run a specific test file
+bundle exec rspec spec/expensive_math_spec.rb
 
-# Operations will log what they would do but use normal Ruby math
-puts 2 + 3  # Logs: "DRY RUN: Would ask AI to calculate 2 + 3" → 5
-puts 10 * 5 # Logs: "DRY RUN: Would ask AI to calculate 10 * 5" → 50
-
-# Check dry run status
-puts ExpensiveMath.dry_run?  # => true
+# Run specs and see coverage
+bundle exec rspec --format progress
 ```
 
-**Dry run features:**
-- ✅ Works only when ExpensiveMath is enabled
-- ✅ No API key required
-- ✅ Logs intended operations for debugging
-- ✅ Returns correct mathematical results using normal Ruby operations
-- ✅ Perfect for testing integration without API costs
+The test suite runs in dry run mode by default, so no API key is required for testing.
 
 ### Estimation Rake Task
 
@@ -235,29 +334,6 @@ Processing 3 expressions: ["(2 + 3) * 4 != 20", "10 / 2 + 3 * 4 >= 17", "(5 ** 2
 - Complex expressions with 5+ operations can cost over $0.00001 per calculation
 
 The rake task automatically runs in dry run mode, so no API key is required and no actual API calls are made.
-
-## Features
-
-- ✅ Replaces all basic mathematical operators with LLM API calls
-- ✅ Supports addition, subtraction, multiplication, division, exponentiation, and modulo
-- ✅ Supports comparison operators
-- ✅ Works with integers, floats, rationals, and complex numbers
-- ✅ Configurable LLM endpoint and model
-- ✅ Dry run mode for testing without API calls or costs
-- ✅ Guaranteed to be slower and more expensive than regular math
-- ✅ Perfect for burning through your API quota
-- ✅ Might cost you your job
-
-## Why?
-
-Great question! Here are some compelling reasons to use ExpensiveMath:
-
-1. **Cost Optimization**: Why spend $0.00 on CPU cycles when you can spend $0.002 per calculation?
-2. **Latency Enhancement**: Transform microsecond operations into multi-second adventures
-3. **Carbon Footprint Maximization**: Ensure your simple arithmetic contributes to global warming
-4. **Dependency Injection**: Add network dependencies to the most basic operations
-5. **Debugging Complexity**: Turn `2 + 2 = 4` into a distributed systems problem
-6. **Rate Limiting Fun**: Experience the joy of being throttled while calculating your grocery bill
 
 ## Error Handling
 
