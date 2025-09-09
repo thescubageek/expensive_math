@@ -267,7 +267,9 @@ The test suite runs in dry run mode by default, so no API key is required for te
 
 ### Estimation Rake Task
 
-ExpensiveMath includes a convenient rake task for estimating the cost and performance impact of mathematical expressions without actually making API calls:
+ExpensiveMath includes a convenient rake task for estimating the cost and performance impact of mathematical expressions without actually making API calls.
+
+**NOTE:** This is only for simple math. It does not cover Ruby methods that include operators as part of their algorithm. Your costs will almost certainly be depressingly higher than estimated.
 
 #### Single Expression Analysis
 
@@ -296,7 +298,7 @@ Processing 1 expressions: ["2 + 3"]
 📊 Comparison Table:
 | Expression | Operations | Regular Ruby | ExpensiveMath | Time Increase | Cost |
 |------------|------------|--------------|---------------|---------------|------|
-| 2 + 3      | 1          | 0.0029ms     | 1820ms        | 62,658,517%   | $0.000002 |
+| 2 + 3      | 1          | 0.0029ms     | 1820ms        | 62,658,517%   | $0.000001 |
 ```
 
 #### Multiple Moderate Expressions
@@ -310,9 +312,9 @@ Processing 3 expressions: ["5 * 7 - 1", "(10 / 2) + 3", "2 ** 3 % 5"]
 📊 Comparison Table:
 | Expression | Operations | Regular Ruby | ExpensiveMath | Time Increase | Cost |
 |------------|------------|--------------|---------------|---------------|------|
-| 5 * 7 - 1  | 2          | 0.0035ms     | 3640ms        | 103,957,043%  | $0.000004 |
-| (10 / 2) + 3 | 2          | 0.0041ms     | 3728ms        | 90,926,729%   | $0.000004 |
-| 2 ** 3 % 5 | 3          | 0.0058ms     | 5547ms        | 95,637,831%   | $0.000006 |
+| 5 * 7 - 1  | 2          | 0.0035ms     | 3640ms        | 103,957,043%  | $0.000002 |
+| (10 / 2) + 3 | 2          | 0.0041ms     | 3728ms        | 90,926,729%   | $0.000002 |
+| 2 ** 3 % 5 | 3          | 0.0058ms     | 5547ms        | 95,637,831%   | $0.000003 |
 ```
 
 #### Complex Expressions with Comparisons
@@ -326,18 +328,10 @@ Processing 3 expressions: ["(2 + 3) * 4 != 20", "10 / 2 + 3 * 4 >= 17", "(5 ** 2
 📊 Comparison Table:
 | Expression | Operations | Regular Ruby | ExpensiveMath | Time Increase | Cost |
 |------------|------------|--------------|---------------|---------------|------|
-| (2 + 3) * 4 !... | 3          | 0.0038ms     | 5547ms        | 145,973,584%  | $0.000006 |
-| 10 / 2 + 3 * ... | 4          | 0.0046ms     | 5472ms        | 118,956,422%  | $0.000008 |
-| (5 ** 2 - 10)... | 5          | 0.006ms      | 4140ms        | 68,999,900%   | $0.00001 |
+| (2 + 3) * 4 !... | 3          | 0.0038ms     | 5547ms        | 145,973,584%  | $0.000003 |
+| 10 / 2 + 3 * ... | 4          | 0.0046ms     | 5472ms        | 118,956,422%  | $0.000004 |
+| (5 ** 2 - 10)... | 5          | 0.006ms      | 4140ms        | 68,999,900%   | $0.000005 |
 ```
-
-**Key Observations:**
-- Each operation costs ~$0.000002
-- Regular Ruby operations execute in microseconds (0.003-0.006ms)
-- ExpensiveMath operations take thousands of milliseconds (3-6 seconds each)
-- Time increases range from 69 million% to 146 million% slower than regular Ruby
-- Inequality operators like `!=` leverage the expensive `==` implementation
-- Complex expressions with 5+ operations can cost over $0.00001 per calculation
 
 The rake task automatically runs in dry run mode, so no API key is required and no actual API calls are made.
 
